@@ -32,7 +32,11 @@ document.getElementById("twofa-box").style.display="block"
 else if(data.token){
 
 token = data.token
-document.getElementById("result").innerText="Login exitoso"
+document.getElementById("auth-box").style.display="none"
+document.getElementById("dashboard").style.display="block"
+
+document.getElementById("user-email").innerText =
+"Bienvenido " + email
 
 }
 
