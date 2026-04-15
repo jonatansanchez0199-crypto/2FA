@@ -100,7 +100,7 @@ const userId = req.user.id
 
 const secret = speakeasy.generateSecret({
 length:20,
-name:"AuthDemo"
+name:`AuthDemo (${req.user.email})`
 })
 
 await pool.query(
