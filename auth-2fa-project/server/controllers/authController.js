@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const pool = require('../config/db');
+const QRCode = require("qrcode")
+const speakeasy = require('speakeasy');
 
 exports.register = async (req, res) => {
   const { email, password } = req.body;
@@ -90,35 +92,39 @@ exports.login = async (req, res) => {
 };
 
 // 2FA
-const speakeasy = require('speakeasy');
-const QRCode = require('qrcode');
-
 exports.generate2FA = async (req, res) => {
-  try {
-    const secret = speakeasy.generateSecret({
-      length: 20,
-      name: 'AuthApp (MiProyecto)'
-    });
 
-    // guardar temporalmente el secret
-    await pool.query(
-      'UPDATE users SET twofa_secret = $1 WHERE id = $2',
-      [secret.base32, req.user.id]
-    );
+try {
 
-    // generar QR
-    const qrCode = await QRCode.toDataURL(secret.otpauth_url);
+const userId = req.user.id
 
-    res.json({
-      message: 'Escanea el QR con Google Authenticator',
-      qrCode
-    });
+const secret = speakeasy.generateSecret({
+length:20,
+name:"AuthDemo"
+})
 
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error generando 2FA' });
-  }
-};
+await pool.query(
+'UPDATE users SET twofa_secret = $1 WHERE id = $2',
+[secret.base32, userId]
+)
+
+const qr = await QRCode.toDataURL(secret.otpauth_url)
+
+res.json({
+qr: qr
+})
+
+} catch (error) {
+
+console.error("2FA GENERATE ERROR:", error)
+
+res.status(500).json({
+error:"Error generando 2FA"
+})
+
+}
+
+}
 
 //Verificar 2FA Activo
 exports.verify2FA = async (req, res) => {
