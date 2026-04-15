@@ -1,8 +1,10 @@
+//conexion
 const API = "https://auth-2fa-api.onrender.com/api"
 
 let userId = null
 let token = null
 
+//login
 async function login(){
 
 const email = document.getElementById("email").value
@@ -36,12 +38,13 @@ document.getElementById("result").innerText="Login exitoso"
 
 else{
 
-document.getElementById("result").innerText=data.error
+document.getElementById("result").innerText=data.error || data.message
 
 }
 
 }
 
+//Registro
 async function register(){
 
 const email = document.getElementById("email").value
@@ -64,6 +67,7 @@ document.getElementById("result").innerText = "Usuario creado"
 
 }
 
+//verificar 2FA
 async function verify2FA(){
 
 const code = document.getElementById("token").value
