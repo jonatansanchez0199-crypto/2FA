@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>2FA Demo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>Auth Demo</h1>
+
+<div id="auth-box">
+
+<h2>Login</h2>
+
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+<button onclick="register()">Register</button>
+
+</div>
+
+<div id="twofa-box" style="display:none">
+
+<h2>Enter 2FA Code</h2>
+
+<input id="token" placeholder="6 digit code">
+
+<button onclick="verify2FA()">Verify</button>
+
+</div>
+
+<div id="result"></div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
