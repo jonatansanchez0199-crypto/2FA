@@ -109,3 +109,13 @@ document.getElementById("result").innerText=data.error
 }
 
 }
+
+//Logout
+function logout(){
+
+token = null
+
+document.getElementById("dashboard").style.display="none"
+document.getElementById("auth-box").style.display="block"
+
+}
