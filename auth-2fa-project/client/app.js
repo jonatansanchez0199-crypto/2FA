@@ -119,3 +119,25 @@ document.getElementById("dashboard").style.display="none"
 document.getElementById("auth-box").style.display="block"
 
 }
+
+async function enable2FA(){
+
+const res = await fetch(`${API}/2fa/generate`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":`Bearer ${token}`
+}
+
+})
+
+const data = await res.json()
+
+document.getElementById("dashboard").style.display="none"
+document.getElementById("twofa-setup").style.display="block"
+
+document.getElementById("qr-image").src = data.qr
+
+}
