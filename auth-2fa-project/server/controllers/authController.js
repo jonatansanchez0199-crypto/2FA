@@ -85,7 +85,7 @@ exports.login = async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error en login' });
+    res.status(500).json({ error: 'Error en login o base de datos desconectada' });
   }
 };
 
