@@ -141,3 +141,39 @@ document.getElementById("twofa-setup").style.display="block"
 document.getElementById("qr-image").src = data.qr
 
 }
+
+async function confirm2FA(){
+
+const code = document.getElementById("verify-token").value
+
+const res = await fetch(`${API}/2fa/verify`,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"Authorization":`Bearer ${token}`
+},
+
+body:JSON.stringify({
+token:code
+})
+
+})
+
+const data = await res.json()
+
+if(data.message){
+
+document.getElementById("twofa-setup").style.display="none"
+document.getElementById("dashboard").style.display="block"
+
+alert("2FA activado correctamente")
+
+}else{
+
+alert("Código incorrecto")
+
+}
+
+}
