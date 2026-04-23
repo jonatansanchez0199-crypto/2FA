@@ -195,9 +195,9 @@ async function changePassword(){
 
 const newPassword = document.getElementById("new-password").value
 
-const res = await fetch(`${API}/change-password`,{
+const res = await fetch(`${API}/users/password`,{
 
-method:"POST",
+method:"PUT",
 
 headers:{
 "Content-Type":"application/json",
@@ -223,7 +223,7 @@ if(!confirm("¿Seguro que quieres eliminar tu cuenta?")){
 return
 }
 
-const res = await fetch(`${API}/delete-user`,{
+const res = await fetch(`${API}/users/delete`,{
 
 method:"DELETE",
 
