@@ -3,12 +3,15 @@ const API = "https://auth-2fa-api.onrender.com/api"
 
 let userId = null
 let token = null
+let userEmail = null
 
 //login
 async function login(){
 
 const email = document.getElementById("email").value
 const password = document.getElementById("password").value
+
+userEmail = email
 
 const res = await fetch(`${API}/login`,{
 method:"POST",
@@ -97,8 +100,10 @@ if(data.token){
 token = data.token
 
 document.getElementById("twofa-box").style.display="none"
+document.getElementById("dashboard").style.display="block"
 
-document.getElementById("result").innerText="Login con 2FA exitoso"
+document.getElementById("user-email").innerText =
+    "Bienvenido " + userEmail
 
 }
 
