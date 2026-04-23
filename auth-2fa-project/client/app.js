@@ -177,3 +177,10 @@ alert("Código incorrecto")
 }
 
 }
+
+//Formulario cambio contraseña
+function showChangePassword(){
+
+document.getElementById("change-password").style.display="block"
+
+}
