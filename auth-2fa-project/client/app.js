@@ -193,21 +193,19 @@ document.getElementById("change-password").style.display="block"
 //Cambiar contraseña
 async function changePassword(){
 
+const currentPassword = document.getElementById("current-password").value
 const newPassword = document.getElementById("new-password").value
 
 const res = await fetch(`${API}/users/password`,{
-
 method:"PUT",
-
 headers:{
 "Content-Type":"application/json",
 "Authorization":`Bearer ${token}`
 },
-
 body:JSON.stringify({
-newPassword:newPassword
+currentPassword,
+newPassword
 })
-
 })
 
 const data = await res.json()

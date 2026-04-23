@@ -245,6 +245,11 @@ exports.changePassword = async (req, res) => {
     console.error(error);
     res.status(500).json({ error: 'Error cambiando contraseña' });
   }
+
+  if (!currentPassword || !newPassword) {
+  return res.status(400).json({ error: 'Faltan datos' });
+  }
+
 };
 
 //Eliminar Usuario
