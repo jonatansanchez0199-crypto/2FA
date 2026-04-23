@@ -210,3 +210,28 @@ const data = await res.json()
 alert(data.message || data.error)
 
 }
+
+//Eliminar cuenta
+async function deleteAccount(){
+
+if(!confirm("¿Seguro que quieres eliminar tu cuenta?")){
+return
+}
+
+const res = await fetch(`${API}/delete-user`,{
+
+method:"DELETE",
+
+headers:{
+"Authorization":`Bearer ${token}`
+}
+
+})
+
+const data = await res.json()
+
+alert(data.message)
+
+logout()
+
+}
