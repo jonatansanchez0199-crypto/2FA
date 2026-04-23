@@ -29,6 +29,7 @@ userId = data.userId
 
 document.getElementById("auth-box").style.display="none"
 document.getElementById("twofa-box").style.display="block"
+document.getElementById("change-password").style.display = "block"
 
 }
 
@@ -37,6 +38,7 @@ else if(data.token){
 token = data.token
 document.getElementById("auth-box").style.display="none"
 document.getElementById("dashboard").style.display="block"
+document.getElementById("change-password").style.display = "block"
 
 document.getElementById("user-email").innerText =
 "Bienvenido " + email
@@ -101,6 +103,7 @@ token = data.token
 
 document.getElementById("twofa-box").style.display="none"
 document.getElementById("dashboard").style.display="block"
+document.getElementById("change-password").style.display = "block"
 
 document.getElementById("user-email").innerText =
     "Bienvenido " + userEmail
@@ -142,6 +145,7 @@ const data = await res.json()
 
 document.getElementById("dashboard").style.display="none"
 document.getElementById("twofa-setup").style.display="block"
+
 
 document.getElementById("qr-image").src = data.qr
 
