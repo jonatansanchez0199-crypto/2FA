@@ -1,0 +1,14 @@
+# dependencias
+node_modules/
+
+# variables de entorno
+.env
+server/.env
+auth-2fa-project/server/.env
+
+# logs
+npm-debug.log
+
+# sistema
+.DS_Store
+Thumbs.db
