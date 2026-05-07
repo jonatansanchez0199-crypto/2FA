@@ -1,82 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>2FA Demo</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>2FA Demo</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<h1>Auth Demo</h1>
+    <h1>Auth Demo</h1>
 
-<div id="auth-box">
+    <div id="auth-box">
 
-<h2>Login</h2>
+        <h2>Login</h2>
 
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
+        <input id="email" placeholder="Email">
+        <input id="password" type="password" placeholder="Password">
 
-<button onclick="login()">Login</button>
-<button onclick="register()">Register</button>
+        <button onclick="login()">Login</button>
+        <button onclick="register()">Register</button>
 
-</div>
+    </div>
 
-<div id="twofa-box" style="display:none">
+    <div id="twofa-box" style="display:none">
 
-<h2>Enter 2FA Code</h2>
+        <h2>Enter 2FA Code</h2>
 
-<input id="token" placeholder="6 digit code">
+        <input id="token" placeholder="6 digit code">
 
-<button onclick="verify2FA()">Verify</button>
+        <button onclick="verify2FA()">Verify</button>
 
-</div>
+    </div>
 
-<div id="result"></div>
+    <div id="result"></div>
 
-<script src="app.js"></script>
+    <script src="app.js"></script>
 
-<div id="dashboard" style="display:none">
+    <div id="dashboard" style="display:none">
 
-<h2>Dashboard</h2>
+        <h2>Dashboard</h2>
 
-<p id="user-email"></p>
+        <p id="user-email"></p>
 
-<button onclick="enable2FA()">Activar 2FA</button>
+        <button onclick="enable2FA()">Activar 2FA</button>
 
-<button onclick="showChangePassword()">Cambiar contraseña</button>
+        <button onclick="showChangePassword()">Cambiar contraseña</button>
 
-<button onclick="deleteAccount()">Eliminar cuenta</button>
+        <button onclick="deleteAccount()">Eliminar cuenta</button>
 
-<button onclick="logout()">Cerrar sesión</button>
+        <button onclick="logout()">Cerrar sesión</button>
 
-</div>
+    </div>
 
-<div id="change-password" style="display:none">
+    <div id="change-password" style="display:none">
 
-<h3>Cambiar contraseña</h3>
+        <h3>Cambiar contraseña</h3>
 
-<input id="current-password" type="password" placeholder="Contraseña actual">
+        <input id="current-password" type="password" placeholder="Contraseña actual">
 
-<input id="new-password" type="password" placeholder="Nueva contraseña">
+        <input id="new-password" type="password" placeholder="Nueva contraseña">
 
-<button onclick="changePassword()">Actualizar contraseña</button>
+        <button onclick="changePassword()">Actualizar contraseña</button>
 
-</div>
+    </div>
 
-<div id="twofa-setup" style="display:none">
+    <div id="twofa-setup" style="display:none">
 
-<h3>Escanea este QR con tu app de autenticación</h3>
+        <h3>Escanea este QR con tu app de autenticación</h3>
 
-<img id="qr-image" width="200"/>
+        <img id="qr-image" width="200" />
 
-<p>Luego ingresa el código generado:</p>
+        <p>Luego ingresa el código generado:</p>
 
-<input id="verify-token" placeholder="Código 6 dígitos">
+        <input id="verify-token" placeholder="Código 6 dígitos">
 
-<button onclick="confirm2FA()">Confirmar 2FA</button>
+        <button onclick="confirm2FA()">Confirmar 2FA</button>
 
-</div>
+    </div>
 
 </body>
+
 </html>
