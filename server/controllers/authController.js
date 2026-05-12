@@ -7,6 +7,38 @@ exports.register = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+
+    if (!email || !password) {
+      return res.status(400).json({
+        error: "Completa todos los campos"
+  });
+}
+
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+if (!emailRegex.test(email)) {
+  return res.status(400).json({
+    error: "Correo inválido"
+  });
+}
+
+if (password.length < 6) {
+  return res.status(400).json({
+    error: "La contraseña debe tener al menos 6 caracteres"
+  });
+}
+
+const existingUser = await pool.query(
+  'SELECT * FROM users WHERE email = $1',
+  [email]
+);
+
+if (existingUser.rows.length > 0) {
+  return res.status(400).json({
+    error: "El correo ya está registrado"
+  });
+}
+
     // encriptar contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -35,46 +67,6 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    exports.register = async (req, res) => {
-
-  const { email, password } = req.body;
-
-  try {
-
-    // validar campos vacíos
-    if (!email || !password) {
-      return res.status(400).json({
-        error: "Completa todos los campos"
-      });
-    }
-
-    // validar formato email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({
-        error: "Correo inválido"
-      });
-    }
-
-    // validar password mínima
-    if (password.length < 6) {
-      return res.status(400).json({
-        error: "La contraseña debe tener al menos 6 caracteres"
-      });
-    }
-
-    //validar si email ya existe
-    const existingUser = await pool.query(
-      'SELECT * FROM users WHERE email = $1',
-      [email]
-    );
-
-    if (existingUser.rows.length > 0) {
-      return res.status(400).json({
-        error: "El correo ya está registrado"
-      });
-    }
 
     // buscar usuario
     const result = await pool.query(
@@ -85,85 +77,93 @@ exports.login = async (req, res) => {
     const user = result.rows[0];
 
     if (!user) {
-      return res.status(400).json({ error: 'Usuario no existe' });
+      return res.status(400).json({
+        error: 'Usuario no existe'
+      });
     }
-
-    console.log("password enviada:", password);
-    console.log("hash guardado:", user.password);
 
     // comparar password
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    console.log("match:", isMatch);
+    const isMatch = await bcrypt.compare(
+      password,
+      user.password
+    );
 
     if (!isMatch) {
-      return res.status(400).json({ error: 'Contraseña incorrecta' });
+      return res.status(400).json({
+        error: 'Contraseña incorrecta'
+      });
     }
 
+    // verificar 2FA
     if (user.is_2fa_enabled) {
       return res.json({
         message: '2FA requerido',
         userId: user.id
-    });
-   }
-
-    //verificar si 2FA está habilitado
-    if (user.is_2fa_enabled) {
-      return res.json({
-        message: '2FA requerido',
-        userId: user.id
-     });
+      });
     }
 
     // generar token
     const token = jwt.sign(
-      { id: user.id, email: user.email },
+      {
+        id: user.id,
+        email: user.email
+      },
       process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      {
+        expiresIn: '1h'
+      }
     );
 
     delete user.password;
 
-    res.json({ user, token });
+    res.json({
+      user,
+      token
+    });
 
   } catch (error) {
+
     console.error(error);
-    res.status(500).json({ error: 'Error en login o base de datos desconectada' });
+
+    res.status(500).json({
+      error: 'Error en login'
+    });
+
   }
 };
 
 // 2FA
 exports.generate2FA = async (req, res) => {
 
-try {
+  try {
 
-const userId = req.user.id
+    const userId = req.user.id
 
-const secret = speakeasy.generateSecret({
-length:20,
-name:`AuthDemo (${req.user.email})`
-})
+    const secret = speakeasy.generateSecret({
+      length: 20,
+      name: `AuthDemo (${req.user.email})`
+    })
 
-await pool.query(
-'UPDATE users SET twofa_secret = $1 WHERE id = $2',
-[secret.base32, userId]
-)
+    await pool.query(
+      'UPDATE users SET twofa_secret = $1 WHERE id = $2',
+      [secret.base32, userId]
+    )
 
-const qr = await QRCode.toDataURL(secret.otpauth_url)
+    const qr = await QRCode.toDataURL(secret.otpauth_url)
 
-res.json({
-qr: qr
-})
+    res.json({
+      qr: qr
+    })
 
-} catch (error) {
+  } catch (error) {
 
-console.error("2FA GENERATE ERROR:", error)
+    console.error("2FA GENERATE ERROR:", error)
 
-res.status(500).json({
-error:"Error generando 2FA"
-})
+    res.status(500).json({
+      error: "Error generando 2FA"
+    })
 
-}
+  }
 
 }
 
