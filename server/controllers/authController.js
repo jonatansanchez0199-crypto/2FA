@@ -282,15 +282,14 @@ exports.changePassword = async (req, res) => {
 
     res.json({ message: 'Contraseña actualizada correctamente' });
 
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Faltan datos' });
+    }
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Error cambiando contraseña' });
   }
-
-  if (!currentPassword || !newPassword) {
-  return res.status(400).json({ error: 'Faltan datos' });
-  }
-
 };
 
 //Eliminar Usuario
