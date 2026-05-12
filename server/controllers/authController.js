@@ -35,6 +35,47 @@ exports.login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    exports.register = async (req, res) => {
+
+  const { email, password } = req.body;
+
+  try {
+
+    // validar campos vacíos
+    if (!email || !password) {
+      return res.status(400).json({
+        error: "Completa todos los campos"
+      });
+    }
+
+    // validar formato email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({
+        error: "Correo inválido"
+      });
+    }
+
+    // validar password mínima
+    if (password.length < 6) {
+      return res.status(400).json({
+        error: "La contraseña debe tener al menos 6 caracteres"
+      });
+    }
+
+    //validar si email ya existe
+    const existingUser = await pool.query(
+      'SELECT * FROM users WHERE email = $1',
+      [email]
+    );
+
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({
+        error: "El correo ya está registrado"
+      });
+    }
+
     // buscar usuario
     const result = await pool.query(
       'SELECT * FROM users WHERE email = $1',
